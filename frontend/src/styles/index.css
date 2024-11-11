@@ -1,0 +1,75 @@
+@font-face {
+    font-family: Roboto;
+    src: url(../static/fonts/Roboto.ttf);
+}
+
+@font-face {
+    font-family: RobotoMedium;
+    src: url(../static/fonts/Robotomedium.ttf);
+}
+
+html,
+body{
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    color: #052C65;
+    font-family: Roboto, sans-serif;
+}
+
+
+
+.dashboard{
+    height: 100%;
+    width: 100%;
+}
+
+.header-burger{
+    display: none;
+}
+
+.dashboard-sidebar{
+    display: flex;
+    border-right: 1px solid #D9D9D9;
+}
+
+.dashboard-sidebar-menu{
+    border-top: 1px solid #D9D9D9;
+}
+
+.dashboard-sidebar-user{
+    border-top: 1px solid #D9D9D9;
+    width: 100%;
+    
+}
+
+.logo{
+    width: 98px;
+}
+
+.text-color{
+    color: #052C65;
+}
+
+.dashboard-pie-title{
+    color: #290661;
+}
+
+.block{
+    width: 35px;
+    height: 10px;
+    margin-right: 10px;
+}
+
+.yellow-block{
+    background-color: yellow;
+}
+
+.header-table{
+    color: #052C65;
+}
+
+
+@import "common-adaptive.css";
+@import "login.css";
+@import "bootstrap.min.css";
