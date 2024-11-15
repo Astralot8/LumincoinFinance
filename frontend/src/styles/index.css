@@ -17,8 +17,6 @@ body{
     font-family: Roboto, sans-serif;
 }
 
-
-
 .dashboard{
     height: 100%;
     width: 100%;
@@ -69,7 +67,3 @@ body{
     color: #052C65;
 }
 
-
-@import "common-adaptive.css";
-@import "login.css";
-@import "bootstrap.min.css";

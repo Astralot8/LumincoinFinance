@@ -1,15 +1,14 @@
 import { Login } from "./components/auth/login";
-import { Registration } from "./components/auth/registration";
+import { SignUp } from "./components/auth/sign-up";
 import { Dashboard } from "./components/dashboard";
 
 export class Router {
   constructor() {
     this.titlePageElement = document.getElementById("page-title");
     this.contentPageElement = document.getElementById("content");
-    
+    this.indexStyleSheetElement = document.getElementById("index-stylesheet");
 
     this.initEvents();
-    
 
     this.routes = [
       {
@@ -33,22 +32,25 @@ export class Router {
         filePathTemplate: "/templates/pages/auth/login.html",
         useLayout: false,
         load: () => {
-          new Login();
+          new Login(this.openNewRoute.bind(this));
         },
+        styles: ["login.css"],
       },
       {
-        route: "/registration",
+        route: "/sign-up",
         title: "Регистрация",
-        filePathTemplate: "/templates/pages/auth/registration.html",
+        filePathTemplate: "/templates/pages/auth/sign-up.html",
         useLayout: false,
         load: () => {
-          new Registration();
+          new SignUp(this.openNewRoute.bind(this));
         },
+        styles: ["login.css"],
       },
       {
         route: "/profit-expenses",
-        title: "доходы и расходы",
-        filePathTemplate: "/templates/pages/profit-expenses/profit-expenses.html",
+        title: "Доходы и расходы",
+        filePathTemplate:
+          "/templates/pages/profit-expenses/profit-expenses.html",
         useLayout: "/templates/layout.html",
         // load: () => {
         //   new Registration();
@@ -57,37 +59,83 @@ export class Router {
     ];
   }
 
-  initEvents(){
+  initEvents() {
     window.addEventListener("DOMContentLoaded", this.activateRoute.bind(this));
     window.addEventListener("popstate", this.activateRoute.bind(this));
+    document.addEventListener("click", this.clickHandler.bind(this));
   }
 
-  async activateRoute() {
+  async openNewRoute(url) {
+    const currentRoute = window.location.pathname;
+    history.pushState({}, "", url);
+    await this.activateRoute(null, currentRoute);
+  }
+
+  async clickHandler(e) {
+    let element = null;
+    if (e.target.nodeName === "A") {
+      element = e.target;
+    } else if (e.target.parentElement.nodeName === "A") {
+      element = e.target.parentNode;
+    }
+
+    if (element) {
+      e.preventDefault();
+      const url = element.href.replace(window.location.origin, "");
+      if (!url || url === "/#" || url.startsWith("javascript:void(0)")) {
+        return;
+      }
+      await this.openNewRoute(url);
+    }
+  }
+
+  async activateRoute(e, oldRoute = null) {
+    if (oldRoute) {
+      const currentRoute = this.routes.find((item) => item.route === oldRoute);
+      if (currentRoute.styles && currentRoute.styles.length > 0) {
+        currentRoute.styles.forEach((style) => {
+          document.querySelector(`link[href='/css/${style}']`).remove();
+        });
+      }
+    }
     const urlRoute = window.location.pathname;
-    const newRoute = this.routes.find(item => item.route === urlRoute);
+    const newRoute = this.routes.find((item) => item.route === urlRoute);
 
-    if(newRoute){
+    if (newRoute) {
+      if (newRoute.styles && newRoute.styles.length > 0) {
+        newRoute.styles.forEach((style) => {
+          const link = document.createElement("link");
+          link.rel = "stylesheet";
+          link.href = "/css/" + style;
+          document.head.insertBefore(link, this.indexStyleSheetElement);
+        });
+      }
 
-        if(newRoute.title) {
-            this.titlePageElement.innerText = newRoute.title + ' | Lumincoin Finance'
+      if (newRoute.title) {
+        this.titlePageElement.innerText =
+          newRoute.title + " | Lumincoin Finance";
+      }
+
+      if (newRoute.filePathTemplate) {
+        let contentBlock = this.contentPageElement;
+        if (newRoute.useLayout) {
+          this.contentPageElement.innerHTML = await fetch(
+            newRoute.useLayout
+          ).then((response) => response.text());
+          contentBlock = document.getElementById("content-layout");
         }
+        contentBlock.innerHTML = await fetch(newRoute.filePathTemplate).then(
+          (response) => response.text()
+        );
+      }
 
-        if(newRoute.filePathTemplate){
-          let contentBlock = this.contentPageElement;
-          if(newRoute.useLayout){
-            this.contentPageElement.innerHTML = await fetch(newRoute.useLayout).then(response => response.text());
-            contentBlock = document.getElementById("content-layout");
-          } 
-          contentBlock.innerHTML = await fetch(newRoute.filePathTemplate).then(response => response.text());     
-        }
-
-        if(newRoute.load && typeof newRoute.load === 'function'){
-            newRoute.load();
-        }
-
+      if (newRoute.load && typeof newRoute.load === "function") {
+        newRoute.load();
+      }
     } else {
-        window.location = "/404";
-        console.log("No route found");
+      history.pushState({}, "", "/404");
+      await this.activateRoute();
+      console.log("No route found");
     }
   }
 }
