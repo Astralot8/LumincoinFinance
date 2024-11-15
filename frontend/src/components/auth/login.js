@@ -52,7 +52,7 @@ export class Login {
       });
 
       const result = await response.json();
-      if(result.error || !result.tokens.accessToken || !result.tokens.refreshToken || !result.user.id || !result.user.lastName || !result.user.name){
+      if(!result.tokens.accessToken || !result.tokens.refreshToken || !result.user.id || !result.user.lastName || !result.user.name){
         this.commonErrorElement.classList.remove("d-none");
         return;
       }

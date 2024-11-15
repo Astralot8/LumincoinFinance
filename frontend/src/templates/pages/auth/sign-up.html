@@ -3,7 +3,7 @@
         <form class="text-center">
             <img class="mb-4 signin-logo" src="images/Logo.png" alt="Logo">
             <h1 class="h3 mb-3 signin-title">Создайте аккаунт</h1>
-
+            <div class="text-danger mb-2 d-none" id="common-error"> Не удалось зарегистрировать пользователя. Обратитесь в поддержку.</div>
             <div class="mb-3">
                 <div class="input-group mb-1">
                     <span class="input-group-text p-3">
@@ -14,12 +14,12 @@
                         </svg>
                     </span>
                     <div class="form-floating">
-                        <input type="text" class="form-control" id="name" placeholder="name@example.com">
-                        <label for="name">ФИО</label>
+                        <input type="text" class="form-control" id="fullName" placeholder="name@example.com">
+                        <label for="fullName">ФИО</label>
                     </div>
                 </div>
-                <div class="text-danger mb-2 d-none">
-                    Заполните ФИО
+                <div class="text-danger mb-2 d-none" id="fullName-error">
+                    Заполните ФИО!
                 </div>
             </div>
             <div class="mb-3">
@@ -32,12 +32,12 @@
                         </svg>
                     </span>
                     <div class="form-floating">
-                        <input type="email" class="form-control is-invalid" id="email" placeholder="name@example.com">
+                        <input type="email" class="form-control" id="email" placeholder="name@example.com">
                         <label for="email">Электронная почта</label>
                     </div>
                 </div>
-                <div class="text-danger fs-6" id="email-error">
-                    Заполните e-mail
+                <div class="text-danger fs-6 d-none" id="email-error">
+                    Заполните e-mail!
                 </div>
             </div>
             <div class="mb-3">
@@ -54,8 +54,8 @@
                         <label for="password">Пароль</label>
                     </div>
                 </div>
-                <div class="text-danger mb-2 d-none">
-                    Введите пароль
+                <div class="text-danger mb-2 d-none" id="password-error">
+                    Введите пароль!
                 </div>
             </div>
             <div class="mb-3">
@@ -68,15 +68,15 @@
                         </svg>
                     </span>
                     <div class="form-floating">
-                        <input type="password" class="form-control" id="repeat-password" placeholder="Password">
-                        <label for="repeat-password">Подтверждение пароля</label>
+                        <input type="password" class="form-control" id="password-repeat" placeholder="Password">
+                        <label for="password-repeat">Подтверждение пароля</label>
                     </div>
                 </div>
-                <div class="text-danger mb-2 d-none">
-                    Введенные пароли не совпадают
+                <div class="text-danger mb-2 d-none" id="password-repeat-error">
+                    Введенные пароли не совпадают!
                 </div>
             </div>
-            <button class="btn btn-primary w-100 py-2" type="button">Войти</button>
+            <button class="btn btn-primary w-100 py-2" type="button" id="process-button">Войти</button>
         </form>
         <div class="mt-2">Уже есть аккаунт? <a href="/login" class="link">Войдите в систему</a></div>
     </section>

@@ -56,6 +56,86 @@ export class Router {
         //   new Registration();
         // },
       },
+      {
+        route: "/profit-expenses-edit",
+        title: "Редактирование дохода/расхода",
+        filePathTemplate:
+          "/templates/pages/profit-expenses/profit-expenses-edit.html",
+        useLayout: "/templates/layout.html",
+        // load: () => {
+        //   new Registration();
+        // },
+      },
+      {
+        route: "/profit-expenses-create",
+        title: "Создание дохода/расхода",
+        filePathTemplate:
+          "/templates/pages/profit-expenses/profit-expenses-create.html",
+        useLayout: "/templates/layout.html",
+        // load: () => {
+        //   new Registration();
+        // },
+      },
+      {
+        route: "/profit",
+        title: "Доходы",
+        filePathTemplate:
+          "/templates/pages/profit/profit.html",
+        useLayout: "/templates/layout.html",
+        // load: () => {
+        //   new Registration();
+        // },
+      },
+      {
+        route: "/profit-edit",
+        title: "Редактирование категории доходов",
+        filePathTemplate:
+          "/templates/pages/profit/profit-edit.html",
+        useLayout: "/templates/layout.html",
+        // load: () => {
+        //   new Registration();
+        // },
+      },
+      {
+        route: "/profit-create",
+        title: "Создание категории доходов",
+        filePathTemplate:
+          "/templates/pages/profit/profit-create.html",
+        useLayout: "/templates/layout.html",
+        // load: () => {
+        //   new Registration();
+        // },
+      },
+      {
+        route: "/expenses",
+        title: "Расходы",
+        filePathTemplate:
+          "/templates/pages/expenses/expenses.html",
+        useLayout: "/templates/layout.html",
+        // load: () => {
+        //   new Registration();
+        // },
+      },
+      {
+        route: "/expenses-edit",
+        title: "Редактирование категории расходов",
+        filePathTemplate:
+          "/templates/pages/expenses/expenses-edit.html",
+        useLayout: "/templates/layout.html",
+        // load: () => {
+        //   new Registration();
+        // },
+      },
+      {
+        route: "/expenses-create",
+        title: "Создание категории расходов",
+        filePathTemplate:
+          "/templates/pages/expenses/expenses-create.html",
+        useLayout: "/templates/layout.html",
+        // load: () => {
+        //   new Registration();
+        // },
+      },
     ];
   }
 
