@@ -1,4 +1,5 @@
 import { Login } from "./components/auth/login";
+import { Logout } from "./components/auth/logout";
 import { SignUp } from "./components/auth/sign-up";
 import { Dashboard } from "./components/dashboard";
 
@@ -45,6 +46,12 @@ export class Router {
           new SignUp(this.openNewRoute.bind(this));
         },
         styles: ["login.css"],
+      },
+      {
+        route: "/logout",
+        load: () => {
+          new Logout(this.openNewRoute.bind(this));
+        }
       },
       {
         route: "/profit-expenses",

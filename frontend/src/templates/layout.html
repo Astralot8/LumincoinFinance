@@ -1,5 +1,5 @@
-<main class=" d-xl-flex dashboard">
-    <div class="d-flex flex-column flex-xl-row">
+<main class="">
+    <div class="dashboard">
         <div class="header-burger">
             <div class="collapse" id="navbarToggleExternalContent" data-bs-theme="dark">
                 <div class="p-3">
@@ -76,25 +76,30 @@
                     <div class="fw-bold p-1 p-sm-2 p-md-3 text-color dashboard-sidebar-balance d-flex"><span
                             class="dashboard-sidebar-balance-text">Баланс: </span><span
                             class="text-primary ms-2">500$</span></div>
-                    <div class="p-3 ">
-                        <a href="javascript:void(0)" class="d-flex align-items-center text-decoration-none">
-                            <img src="images/Avatar.png" alt="" width="32" height="32"
-                                class="rounded-circle me-2">
+                
+
+                    <div class="p-md-3 dropdown">
+                        <button type="button" class="btn d-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="images/Avatar.png" alt="" width="32" height="32" class="rounded-circle me-2">
                             <div class="text-color user-name" id="name">RomanChernov</div>
-                        </a>
+                            
+                        </button>
+                        <ul class="dropdown-menu logout-menu">
+                            <li><a href="/logout" class="dropdown-item logout-item text-dark">Выход</a></li>
+                        </ul>
                     </div>
                 </div>
             </nav>
         </div>
 
-        <section class=" flex-xl-column align-items-center align-items-xl-start flex-shrink-0 dashboard-sidebar">
+        <section class="dashboard-sidebar">
             <a href="/"
-                class="d-flex align-items-center px-1 px-md-3 pt-xl-5 mx-auto link-body-emphasis text-decoration-none">
-                <img class="mb-xl-4 logo" src="images/Logo.png" alt="Logo">
+                class="d-flex align-items-center px-1 px-md-3 pt-5  mx-auto link-body-emphasis text-decoration-none">
+                <img class="mb-xl-4 mb-2 logo" src="images/Logo.png" alt="Logo">
             </a>
             <ul class="nav nav-pills flex-sm-row flex-xl-column mb-auto p-3 pt-xl-5 px-3 dashboard-sidebar-menu">
                 <li class="nav-item">
-                    <a href="javascript:void(0)" class="nav-link active d-flex align-items-center" aria-current="page">
+                    <a href="/" class="nav-link active d-flex align-items-center" aria-current="page">
                         <svg width="15" height="14" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" clip-rule="evenodd"
                                 d="M1.5 12.3964V5.89644H2.5V12.3964C2.5 12.6726 2.72386 12.8964 3 12.8964H12C12.2761 12.8964 12.5 12.6726 12.5 12.3964V5.89644H13.5V12.3964C13.5 13.2249 12.8284 13.8964 12 13.8964H3C2.17157 13.8964 1.5 13.2249 1.5 12.3964Z"
@@ -110,7 +115,7 @@
                         <span class="ms-2">Главная</span>
                     </a>
                 </li>
-                <li>
+                <li class="nav-item">
                     <a href="/profit-expenses" class="nav-link link-body-emphasis d-flex align-items-center">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" clip-rule="evenodd"
@@ -149,13 +154,17 @@
                     </div>
                 </li>
             </ul>
-            <div class="fw-bold p-1 p-sm-2 p-md-3 text-color dashboard-sidebar-balance d-flex">Баланс: <span
+            <div class="fw-bold p-1 p-sm-2 p-md-3 text-color dashboard-sidebar-balance d-flex ms-3">Баланс: <span
                     class="text-primary ms-2">500$</span></div>
-            <div class="p-3 dashboard-sidebar-user">
-                <a href="javascript:void(0)" class="d-flex align-items-center text-decoration-none">
+            <div class="p-3 dashboard-sidebar-user dropdown">
+                <button type="button" class="btn d-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false">
                     <img src="images/Avatar.png" alt="" width="32" height="32" class="rounded-circle me-2">
                     <div class="text-color user-name" id="name">RomanChernov</div>
-                </a>
+                    
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a href="/logout" class="dropdown-item text-dark">Выход</a></li>
+                </ul>
             </div>
         </section>
 

@@ -1,6 +1,14 @@
+import { AuthUtils } from "../../utils/auth-utils";
+import { HttpUtils } from "../../utils/http-utils";
+
 export class SignUp {
   constructor(openNewRoute) {
     this.openNewRoute = openNewRoute;
+
+    if (AuthUtils.getAuthInfo(AuthUtils.accessTokenKey)) {
+      return this.openNewRoute("/");
+    }
+
     this.fullNameElement = document.getElementById("fullName");
     this.fullNameErrorElement = document.getElementById("fullName-error");
     this.emailElement = document.getElementById("email");
@@ -21,7 +29,12 @@ export class SignUp {
 
   validateForm() {
     let isValid = true;
-    if (this.fullNameElement.value) {
+    if (
+      this.fullNameElement.value &&
+      this.fullNameElement.value.match(
+        /^[А-ЯЁ][а-яё]{2,}([-][А-ЯЁ][а-яё]{2,})?\s[А-ЯЁ][а-яё]{2,}\s[А-ЯЁ][а-яё]{2,}$/
+      )
+    ) {
       this.fullNameElement.classList.remove("is-invalid");
       this.fullNameErrorElement.classList.add("d-none");
     } else {
@@ -70,66 +83,47 @@ export class SignUp {
     this.commonErrorElement.classList.add("d-none");
     if (this.validateForm()) {
       const fullNameArray = this.fullNameElement.value.split(" ");
-      const response = await fetch("http://localhost:3000/api/signup", {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({
-          name: fullNameArray[1],
-          lastName: fullNameArray[0],
-          email: this.emailElement.value,
-          password: this.passwordElement.value,
-          passwordRepeat: this.repeatPasswordElement.value,
-        }),
+
+      const result = await HttpUtils.request("/signup", "POST", {
+        name: fullNameArray[1],
+        lastName: fullNameArray[0],
+        email: this.emailElement.value,
+        password: this.passwordElement.value,
+        passwordRepeat: this.repeatPasswordElement.value,
       });
 
-      const result = await response.json();
       if (result.error) {
-        this.commonErrorElement.innerText = result.message;
+        this.commonErrorElement.innerText = result.response.message;
         this.commonErrorElement.classList.remove("d-none");
         return;
       }
-      if (
-        !result.user.id ||
-        !result.user.email ||
-        !result.user.name ||
-        !result.user.lastName
-      ) {
-        this.commonErrorElement.classList.remove("d-none");
-        return;
-      }
-      if (
-        result.user.id ||
-        result.user.email ||
-        result.user.name ||
-        result.user.lastName
-      ) {
-        const autoLogin = await fetch("http://localhost:3000/api/login", {
-          method: "POST",
-          headers: {
-            "Content-type": "application/json",
-            Accept: "application/json",
-          },
-          body: JSON.stringify({
-            email: this.emailElement.value,
-            password: this.passwordElement.value,
-            rememberMe: true,
-          }),
-        });
-        const resultLogin = await autoLogin.json();
 
-        localStorage.setItem("accessToken", resultLogin.tokens.accessToken);
-        localStorage.setItem("refreshToken", resultLogin.tokens.refreshToken);
-        localStorage.setItem(
-          "userInfo",
-          JSON.stringify({
-            id: resultLogin.user.id,
-            lastName: resultLogin.user.lastName,
-            name: resultLogin.user.name,
-          })
-        );
+      if (
+        !result.response ||
+        (result.response && !result.response.user.id ||
+        !result.response.user.email ||
+        !result.response.user.name ||
+        !result.response.user.lastName)
+      ) {
+        this.commonErrorElement.classList.remove("d-none");
+        return;
+      }
+
+      if (
+        result.response.user.id ||
+        result.response.user.email ||
+        result.response.user.name ||
+        result.response.user.lastName
+      ) {
+
+        const autoLogin = await HttpUtils.request('/login', 'POST', {
+          email: this.emailElement.value,
+          password: this.passwordElement.value,
+          rememberMe: true,
+        })
+        
+        AuthUtils.setAuthInfo(autoLogin.response.tokens.accessToken, autoLogin.response.tokens.refreshToken, {id: autoLogin.response.user.id, lastName: autoLogin.response.user.lastName, name: autoLogin.response.user.name})
+
       }
 
       this.openNewRoute("/");
