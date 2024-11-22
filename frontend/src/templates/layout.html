@@ -1,4 +1,20 @@
-<main class="">
+
+<main class="layout">
+    <div class="modal-window-wrapp p-4 py-md-5" id="modalSheet">
+        
+            <div class="modal-window rounded-4 shadow p-3">
+                <div class="text-center pb-3">
+                    <p class="text-color fw-bold h5">Изменение баланса средств</p>
+                    <label for="newBalanceValue" class="col-form-label">Введите новый баланс $:</label>
+                    <input type="number" class="form-control" id="newBalanceValue">
+                </div>
+                <div class="modal-footer gap-2 border-top-0 justify-content-center">
+                    <button type="button" class="btn btn-lg btn-success" id="save-button">Сохранить</button>
+                    <button type="button" class="btn btn-lg btn-danger" id="cancel-button">Отмена</button>
+                </div>
+            </div>
+        
+    </div>
     <div class="dashboard">
         <div class="header-burger">
             <div class="collapse" id="navbarToggleExternalContent" data-bs-theme="dark">
@@ -54,8 +70,9 @@
                                     </svg>
                                 </button>
                                 <ul class="dropdown-menu text-bg-light">
-                                    <li><a href="/profit" class="dropdown-item text-dark" type="button">Доходы</a></li>
-                                    <li><a href="/expenses" class="dropdown-item text-dark" type="button">Расходы</a></li>
+                                    <li><a href="/profit" class="dropdown-item" type="button">Доходы</a></li>
+                                    <li><a href="/expenses" class="dropdown-item" type="button">Расходы</a>
+                                    </li>
                                 </ul>
                             </div>
                         </li>
@@ -76,13 +93,14 @@
                     <div class="fw-bold p-1 p-sm-2 p-md-3 text-color dashboard-sidebar-balance d-flex"><span
                             class="dashboard-sidebar-balance-text">Баланс: </span><span
                             class="text-primary ms-2">500$</span></div>
-                
+
 
                     <div class="p-md-3 dropdown">
-                        <button type="button" class="btn d-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false">
+                        <button type="button" class="btn d-flex align-items-center" data-bs-toggle="dropdown"
+                            aria-expanded="false">
                             <img src="images/Avatar.png" alt="" width="32" height="32" class="rounded-circle me-2">
                             <div class="text-color user-name" id="name">RomanChernov</div>
-                            
+
                         </button>
                         <ul class="dropdown-menu logout-menu">
                             <li><a href="/logout" class="dropdown-item logout-item text-dark">Выход</a></li>
@@ -148,19 +166,20 @@
                             </svg>
                         </button>
                         <ul class="dropdown-menu w-100">
-                            <li><a href="/profit" class="dropdown-item text-dark" type="button">Доходы</a></li>
-                            <li><a href="/expenses" class="dropdown-item text-dark" type="button">Расходы</a></li>
+                            <li><a href="/profit" class="dropdown-item " type="button">Доходы</a></li>
+                            <li><a href="/expenses" class="dropdown-item " type="button">Расходы</a></li>
                         </ul>
                     </div>
                 </li>
             </ul>
-            <div class="fw-bold p-1 p-sm-2 p-md-3 text-color dashboard-sidebar-balance d-flex ms-3">Баланс: <span
-                    class="text-primary ms-2">500$</span></div>
+            <div class="fw-bold p-1 p-sm-2 p-md-3 text-color dashboard-sidebar-balance d-flex ms-3" id="balance-button">
+                Баланс: <span class="text-primary ms-2" id="balance"></span></div>
             <div class="p-3 dashboard-sidebar-user dropdown">
-                <button type="button" class="btn d-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false">
+                <button type="button" class="btn d-flex align-items-center" data-bs-toggle="dropdown"
+                    aria-expanded="false">
                     <img src="images/Avatar.png" alt="" width="32" height="32" class="rounded-circle me-2">
                     <div class="text-color user-name" id="name">RomanChernov</div>
-                    
+
                 </button>
                 <ul class="dropdown-menu">
                     <li><a href="/logout" class="dropdown-item text-dark">Выход</a></li>

@@ -47,7 +47,7 @@ export class Login {
     this.commonErrorElement.classList.add("d-none");
     if (this.validateForm()) {
 
-      const result = await HttpUtils.request('/login', 'POST', {
+      const result = await HttpUtils.request('/login', 'POST', false, {
         email: this.emailElement.value,
         password: this.passwordElement.value,
         rememberMe: this.rememberMeElement.checked,
