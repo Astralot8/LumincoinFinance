@@ -20,8 +20,8 @@ export class Router {
         filePathTemplate: "/templates/pages/dashboard.html",
         useLayout: "/templates/layout.html",
         load: () => {
-          new Dashboard();
-          new Layout();
+          new Dashboard(this.openNewRoute.bind(this));
+          new Layout(this.openNewRoute.bind(this));
         },
       },
       {
