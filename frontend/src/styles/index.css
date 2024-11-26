@@ -106,6 +106,10 @@ body {
     
 }
 
+.popUp{
+    width: 470px;
+}
+
 .table-wrapp{
     
     overflow-x: hidden;

@@ -4,6 +4,7 @@ import { SignUp } from "./components/auth/sign-up";
 import { Dashboard } from "./components/dashboard";
 import { Layout } from "./components/layout";
 import { Profit } from "./components/profit/profit";
+import { profitDelete } from "./components/profit/profit-delete";
 
 export class Router {
   constructor() {
@@ -65,10 +66,9 @@ export class Router {
         load: () => {
           new Profit(this.openNewRoute.bind(this));
           new Layout(this.openNewRoute.bind(this));
+          new profitDelete();
         },
       },
-
-
       {
         route: "/profit-expenses",
         title: "Доходы и расходы",
