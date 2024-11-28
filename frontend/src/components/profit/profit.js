@@ -1,8 +1,12 @@
 import { HttpUtils } from "../../utils/http-utils";
+import { profitDelete } from "./profit-delete";
 
 export class Profit {
   constructor(openNewRoute) {
-    this.popUpElement = document.getElementById('deleteProfit');
+    this.popUpElement = document.getElementById("deleteProfit");
+    this.confirmButton = document.getElementById("confirm-button");
+    this.canceledButton = document.getElementById("canceled-button");
+
     this.openNewRoute = openNewRoute;
     this.getProfit().then();
   }
@@ -28,35 +32,51 @@ export class Profit {
 
   showRecords(profitArray) {
     const recordsElement = document.getElementById("records");
-    for (let i = 0; i < profitArray.length; i++) {
-      const cardWrappElement = document.createElement("div");
-      cardWrappElement.className = "col ps-0 pe-3";
-      const cardElement = document.createElement("div");
-      cardElement.className = "card p-3";
-      const cardHeaderElement = document.createElement("div");
-      cardHeaderElement.className = "dashboard-pie-title h3";
-      cardHeaderElement.innerText = profitArray[i].title;
-      const cardButtonWrappElement = document.createElement("div");
-      cardButtonWrappElement.className = "d-flex gap-2";
-      const cardButtonEditElement = document.createElement("a");
-      cardButtonEditElement.className = "btn btn-primary px-3";
-      cardButtonEditElement.href = "/profit-edit";
-      cardButtonEditElement.innerText = "Редактировать";
-      const cardButtonDeleteElement = document.createElement("a");
-      cardButtonDeleteElement.className = "btn btn-danger px-3";
-      cardButtonDeleteElement.href = "/delete";
-      cardButtonDeleteElement.id = "delete-button";
-      cardButtonDeleteElement.innerText = "Удалить";
+    if (profitArray) {
+      for (let i = 0; i < profitArray.length; i++) {
+        const cardWrappElement = document.createElement("div");
+        cardWrappElement.className = "col ps-0 pe-3";
+        const cardElement = document.createElement("div");
+        cardElement.className = "card p-3";
+        const cardHeaderElement = document.createElement("div");
+        cardHeaderElement.className = "dashboard-pie-title h3";
+        cardHeaderElement.innerText = profitArray[i].title;
+        const cardButtonWrappElement = document.createElement("div");
+        cardButtonWrappElement.className = "d-flex gap-2";
+        const cardButtonEditElement = document.createElement("a");
+        cardButtonEditElement.className = "btn btn-primary px-3";
+        cardButtonEditElement.href = "/profit-edit?id=" + profitArray[i].id;
+        cardButtonEditElement.innerText = "Редактировать";
+        const cardButtonDeleteElement = document.createElement("a");
+        cardButtonDeleteElement.className = "btn btn-danger px-3";
+        cardButtonDeleteElement.href = "/profit-delete?id=" + profitArray[i].id;
+        cardButtonDeleteElement.id = "delete-button";
+        cardButtonDeleteElement.innerText = "Удалить";
 
-      cardButtonWrappElement.appendChild(cardButtonEditElement);
-      cardButtonWrappElement.appendChild(cardButtonDeleteElement);
+        cardButtonWrappElement.appendChild(cardButtonEditElement);
+        cardButtonWrappElement.appendChild(cardButtonDeleteElement);
 
-      cardElement.appendChild(cardHeaderElement);
-      cardElement.appendChild(cardButtonWrappElement);
+        cardElement.appendChild(cardHeaderElement);
+        cardElement.appendChild(cardButtonWrappElement);
 
-      cardWrappElement.appendChild(cardElement);
+        cardWrappElement.appendChild(cardElement);
 
-      recordsElement.appendChild(cardWrappElement);
+        recordsElement.appendChild(cardWrappElement);
+      }
+      const deleteButton = document.getElementById("delete-button");
+      if (deleteButton) {
+        deleteButton.addEventListener("click", () => {
+          this.popUpElement.style.display = "flex";
+          this.confirmButton.addEventListener("click", () => {
+            this.popUpElement.style.display = "none";
+            this.openNewRoute("/profit");
+          });
+
+          this.canceledButton.addEventListener("click", () => {
+            this.popUpElement.style.display = "none";
+          });
+        });
+      }
     }
 
     const cardWrappAddElement = document.createElement("div");
@@ -75,14 +95,5 @@ export class Profit {
     cardAddElement.appendChild(cardButtonCreateElement);
     cardWrappAddElement.appendChild(cardAddElement);
     recordsElement.appendChild(cardWrappAddElement);
-
-    const deleteButon = document.getElementById('delete-button');
-    deleteButon.addEventListener('click', this.openPopUp())
   }
-
-  openPopUp(){
-    this.popUpElement.style.display = "flex";
-  }
-
-
 }
