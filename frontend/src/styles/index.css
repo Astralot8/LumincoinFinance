@@ -84,10 +84,13 @@ body {
     background-color: yellow;
 }
 
-.header-table {
+
+.table-header-content{
+    display: grid;
+    grid-template-columns: 0.5fr 0.3fr 0.4fr 0.3fr 0.4fr 0.5fr 0.2fr;
+
     color: #052C65;
 }
-
 
 .modal-window-wrapp {
     position: fixed;
@@ -126,5 +129,10 @@ body {
         ". "
         ". "
         ". ";
-
 }
+.table-body-content{
+    display: grid;
+    grid-template-columns: 0.5fr 0.3fr 0.5fr 0.3fr 0.4fr 0.5fr 0.2fr;
+}
+
+
