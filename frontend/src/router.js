@@ -2,6 +2,10 @@ import { Login } from "./components/auth/login";
 import { Logout } from "./components/auth/logout";
 import { SignUp } from "./components/auth/sign-up";
 import { Dashboard } from "./components/dashboard";
+import { Layout } from "./components/layout";
+import { Profit } from "./components/profit/profit";
+import { ProfitCreate } from "./components/profit/profit-create";
+import { profitDelete } from "./components/profit/profit-delete";
 
 export class Router {
   constructor() {
@@ -18,7 +22,8 @@ export class Router {
         filePathTemplate: "/templates/pages/dashboard.html",
         useLayout: "/templates/layout.html",
         load: () => {
-          new Dashboard();
+          new Dashboard(this.openNewRoute.bind(this));
+          new Layout(this.openNewRoute.bind(this));
         },
       },
       {
@@ -54,6 +59,35 @@ export class Router {
         }
       },
       {
+        route: "/profit",
+        title: "Доходы",
+        filePathTemplate:
+          "/templates/pages/profit/profit.html",
+        useLayout: "/templates/layout.html",
+        load: () => {
+          new Profit(this.openNewRoute.bind(this));
+          new Layout(this.openNewRoute.bind(this));
+          
+        },
+      },
+      {
+        route: "/profit-delete",
+        load: () => {
+          new profitDelete(this.openNewRoute.bind(this));
+        }
+      },
+      {
+        route: "/profit-create",
+        title: "Создание категории доходов",
+        filePathTemplate:
+          "/templates/pages/profit/profit-create.html",
+        useLayout: "/templates/layout.html",
+        load: () => {
+          new ProfitCreate(this.openNewRoute.bind(this));
+          new Layout(this.openNewRoute.bind(this));
+        },
+      },
+      {
         route: "/profit-expenses",
         title: "Доходы и расходы",
         filePathTemplate:
@@ -83,16 +117,7 @@ export class Router {
         //   new Registration();
         // },
       },
-      {
-        route: "/profit",
-        title: "Доходы",
-        filePathTemplate:
-          "/templates/pages/profit/profit.html",
-        useLayout: "/templates/layout.html",
-        // load: () => {
-        //   new Registration();
-        // },
-      },
+      
       {
         route: "/profit-edit",
         title: "Редактирование категории доходов",
@@ -103,16 +128,7 @@ export class Router {
         //   new Registration();
         // },
       },
-      {
-        route: "/profit-create",
-        title: "Создание категории доходов",
-        filePathTemplate:
-          "/templates/pages/profit/profit-create.html",
-        useLayout: "/templates/layout.html",
-        // load: () => {
-        //   new Registration();
-        // },
-      },
+      
       {
         route: "/expenses",
         title: "Расходы",
@@ -162,7 +178,7 @@ export class Router {
     let element = null;
     if (e.target.nodeName === "A") {
       element = e.target;
-    } else if (e.target.parentElement.nodeName === "A") {
+    } else if (e.target.parentNode.nodeName === "A") {
       element = e.target.parentNode;
     }
 

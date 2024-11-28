@@ -1,19 +1,17 @@
-<!-- modal window -->
-<!-- <div class="modal modal-sheet position-static d-block bg-body-secondary p-4 py-md-5" tabindex="-1" role="dialog"
-            id="modalSheet">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content rounded-4 shadow p-3">
-                    <div class="modal-body text-center">
-                        <p class="text-color fw-bold h5">Вы действительно хотите удалить категорию? Связанные доходы будут удалены навсегда.</p>
-                    </div>
-                    <div class="modal-footer gap-2 border-top-0 justify-content-center">
-                        <button type="button" class="btn btn-lg btn-success">Да, удалить</button>
-                        <button type="button" class="btn btn-lg btn-danger" data-bs-dismiss="modal">Не удалять</button>
-                    </div>
-                </div>
-            </div>
-        </div> -->
-<!-- modal window -->
+
+<div class="modal-window-wrapp p-4 py-md-5" id="deleteProfit">
+        
+    <div class="modal-window rounded-4 shadow p-3 popUp">
+        <div class="text-center pb-3">
+            <p class="text-color fw-bold h5">Вы действительно хотите удалить категорию? Связанные доходы будут удалены навсегда.</p>
+        </div>
+        <div class="modal-footer gap-2 border-top-0 justify-content-center">
+            <button type="button" class="btn btn-lg btn-success" id="confirm-button">Да, удалить</button>
+            <button type="button" class="btn btn-lg btn-danger" id="canceled-button">Не удалять</button>
+        </div>
+    </div>
+
+</div>
 
 <section class="px-4 d-flex flex-column">
     <div class="ms-2 ms-xl-5 mb-2 mb-xl-5 mt-xl-5 pt-xl-5 pt-3 text-center text-xl-start">
@@ -21,71 +19,7 @@
     </div>
 
 
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 ms-xl-5 g-3">
-        <div class="col ps-0 pe-3">
-            <div class="card p-3">
-                <div class="card-header-space-between">
-                    <h2 class="dashboard-pie-title h3">
-                        Депозиты
-                    </h2>
-                </div>
-                <div class="d-flex gap-2">
-                    <a href="/profit-edit" class="btn btn-primary px-3">Редактировать</a>
-                    <button class="btn btn-danger px-3" type="button">Удалить</button>
-                </div>
-            </div>
-        </div>
-        <div class="col ps-0 pe-3">
-            <div class="card p-3">
-                <div class="card-header-space-between">
-                    <h2 class="dashboard-pie-title h3">
-                        Зарплата
-                    </h2>
-                </div>
-                <div class="d-flex gap-2">
-                    <a href="/profit-edit" class="btn btn-primary px-3">Редактировать</a>
-                    <button class="btn btn-danger px-3" type="button">Удалить</button>
-                </div>
-            </div>
-        </div>
-        <div class="col ps-0 pe-3">
-            <div class="card p-3">
-                <div class="card-header-space-between">
-                    <h2 class="dashboard-pie-title h3">
-                        Сбережения
-                    </h2>
-                </div>
-                <div class="d-flex gap-2">
-                    <a href="/profit-edit" class="btn btn-primary px-3">Редактировать</a>
-                    <button class="btn btn-danger px-3" type="button">Удалить</button>
-                </div>
-            </div>
-        </div>
-        <div class="col ps-0 pe-3">
-            <div class="card p-3">
-                <div class="card-header-space-between">
-                    <h2 class="dashboard-pie-title h3">
-                        Инвестиции
-                    </h2>
-                </div>
-                <div class="d-flex gap-2">
-                    <a href="/profit-edit" class="btn btn-primary px-3">Редактировать</a>
-                    <button class="btn btn-danger px-3" type="button">Удалить</button>
-                </div>
-            </div>
-        </div>
-        <div class="col ps-0 pe-3">
-            <div class="card p-3 h-100">
-                <div class="d-flex justify-content-center m-auto">
-                    <a href="/profit-create">
-                        <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M14.5469 6.08984V9.05664H0.902344V6.08984H14.5469ZM9.32422 0.511719V15.0039H6.13867V0.511719H9.32422Z"
-                                fill="#CED4DA" />
-                        </svg>
-                    </a>
-                </div>
-            </div>
-        </div>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 ms-xl-5 g-3" id="records">
+        
     </div>
 </section>

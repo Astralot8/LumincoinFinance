@@ -84,7 +84,7 @@ export class SignUp {
     if (this.validateForm()) {
       const fullNameArray = this.fullNameElement.value.split(" ");
 
-      const result = await HttpUtils.request("/signup", "POST", {
+      const result = await HttpUtils.request("/signup", "POST", false, {
         name: fullNameArray[1],
         lastName: fullNameArray[0],
         email: this.emailElement.value,
@@ -116,12 +116,13 @@ export class SignUp {
         result.response.user.lastName
       ) {
 
-        const autoLogin = await HttpUtils.request('/login', 'POST', {
+        const autoLogin = await HttpUtils.request('/login', 'POST', false, {
           email: this.emailElement.value,
           password: this.passwordElement.value,
           rememberMe: true,
         })
         
+        console.log(autoLogin)
         AuthUtils.setAuthInfo(autoLogin.response.tokens.accessToken, autoLogin.response.tokens.refreshToken, {id: autoLogin.response.user.id, lastName: autoLogin.response.user.lastName, name: autoLogin.response.user.name})
 
       }
