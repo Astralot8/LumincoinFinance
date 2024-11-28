@@ -1,3 +1,4 @@
+import config from "../../config/config";
 import { HttpUtils } from "../../utils/http-utils";
 import { profitDelete } from "./profit-delete";
 

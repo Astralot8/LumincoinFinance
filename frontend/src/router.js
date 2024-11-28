@@ -6,6 +6,7 @@ import { Layout } from "./components/layout";
 import { Profit } from "./components/profit/profit";
 import { ProfitCreate } from "./components/profit/profit-create";
 import { profitDelete } from "./components/profit/profit-delete";
+import { ProfitEdit } from "./components/profit/profit-edit";
 
 export class Router {
   constructor() {
@@ -88,6 +89,17 @@ export class Router {
         },
       },
       {
+        route: "/profit-edit",
+        title: "Редактирование категории доходов",
+        filePathTemplate:
+          "/templates/pages/profit/profit-edit.html",
+        useLayout: "/templates/layout.html",
+        load: () => {
+          new ProfitEdit(this.openNewRoute.bind(this));
+          new Layout(this.openNewRoute.bind(this));
+        },
+      },
+      {
         route: "/profit-expenses",
         title: "Доходы и расходы",
         filePathTemplate:
@@ -118,16 +130,7 @@ export class Router {
         // },
       },
       
-      {
-        route: "/profit-edit",
-        title: "Редактирование категории доходов",
-        filePathTemplate:
-          "/templates/pages/profit/profit-edit.html",
-        useLayout: "/templates/layout.html",
-        // load: () => {
-        //   new Registration();
-        // },
-      },
+      
       
       {
         route: "/expenses",
