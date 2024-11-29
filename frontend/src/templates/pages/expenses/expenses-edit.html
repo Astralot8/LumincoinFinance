@@ -5,10 +5,13 @@
 
 
     <div class="ms-xl-5">
-        <input type="text" class="form-control" placeholder="Жильё..." aria-label="">
+        <input type="text" class="form-control" id="expense-title">
+        <div class="text-danger mb-2 d-none" id="expense-title-error">
+            Заполните поле!
+        </div>
         <div class="mt-3 d-flex gap-3">
-            <button type="button" class="btn btn-success">Сохранить</button>
-            <button type="button" class="btn btn-danger">Отмена</button>
+            <button type="button" class="btn btn-success" id="edit-button">Сохранить</button>
+            <a href="/expenses" class="btn btn-danger">Отмена</a>
         </div>
     </div>
 </section>

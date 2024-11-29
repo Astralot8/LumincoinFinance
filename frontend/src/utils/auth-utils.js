@@ -32,7 +32,7 @@ export class AuthUtils {
     }
   }
 
-  static async updateRefreshToken(){
+  static async updateAccessToken(){
     let result = false;
     const refreshToken = this.getAuthInfo(this.refreshTokenKey);
     if(refreshToken) {
