@@ -1,19 +1,16 @@
-<!-- modal window -->
-<!-- <div class="modal modal-sheet position-static d-block bg-body-secondary p-4 py-md-5" tabindex="-1" role="dialog"
-            id="modalSheet">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content rounded-4 shadow p-3">
-                    <div class="modal-body text-center">
-                        <p class="text-color fw-bold h5">Вы действительно хотите удалить операцию?</p>
-                    </div>
-                    <div class="modal-footer gap-2 border-top-0 justify-content-center">
-                        <button type="button" class="btn btn-lg btn-success">Да, удалить</button>
-                        <button type="button" class="btn btn-lg btn-danger" data-bs-dismiss="modal">Не удалять</button>
-                    </div>
-                </div>
-            </div>
-        </div> -->
-<!-- modal window -->
+<div class="modal-window-wrapp p-4 py-md-5" id="deleteOperation">
+
+    <div class="modal-window rounded-4 shadow p-3 popUp">
+        <div class="text-center pb-3">
+            <p class="text-color fw-bold h5">Вы действительно хотите удалить операцию?</p>
+        </div>
+        <div class="modal-footer gap-2 border-top-0 justify-content-center">
+            <a class="btn btn-lg btn-success" id="confirm-button">Да, удалить</a>
+            <a href="/operations" class="btn btn-lg btn-danger" id="canceled-button">Не удалять</a>
+        </div>
+    </div>
+
+</div>
 
 <section class="px-4">
     <div class="ms-2 ms-xl-5 mb-2 mb-xl-5 mt-xl-5 pt-xl-5 pt-3 text-center text-xl-start">
@@ -22,28 +19,30 @@
 
     <div class="ms-xl-5">
         <div class="d-flex align-items-center justify-content-center justify-content-xl-start gap-3">
-            <a href="/profit-expenses-create" class="btn btn-success">Создать доход</a>
-            <a href="/profit-expenses-create" class="btn btn-danger">Создать расход</a>
+            <a href="/operations-create" class="btn btn-success" id="income-create">Создать доход</a>
+            <a href="/operations-create" class="btn btn-danger" id="expense-create">Создать расход</a>
         </div>
 
         <div
             class="d-flex flex-wrap align-items-center justify-content-center justify-content-xl-start mx-auto gap-3 py-xl-5 py-3">
-            <button class="btn btn-secondary px-3" type="button">Сегодня</button>
-            <button class="btn border px-3 text-secondary" type="button">Неделя</button>
-            <button class="btn border px-3 text-secondary" type="button">Месяц</button>
-            <button class="btn border px-3 text-secondary" type="button">Год</button>
-            <button class="btn border px-3 text-secondary" type="button">Все</button>
-            <button class="btn border px-3 text-secondary" type="button">Интервал</button>
+            <button class="btn btn-secondary px-3" type="button" id="today-filter">Сегодня</button>
+            <button class="btn border px-3 text-secondary" type="button" id="week-filter">Неделя</button>
+            <button class="btn border px-3 text-secondary" type="button" id="month-filter">Месяц</button>
+            <button class="btn border px-3 text-secondary" type="button"id="year-filter">Год</button>
+            <button class="btn border px-3 text-secondary" type="button" id="all-filter">Все</button>
+            <button class="btn border px-3 text-secondary" type="button" id="interval-filter">Интервал</button>
             <span>с</span>
-            <a href="#" class="text-secondary">Дата</a>
+            <a href="#" class="text-secondary pe-1">Дата
+                
+            </a>
+            <input type="date" id="startDate">
             <span>по</span>
-            <a href="#" class="text-secondary">Дата</a>
+            <a href="#" class="text-secondary pe-1">Дата
+                
+            </a>
+            <input type="date" id="endDate">
         </div>
         <div class="table-wrapp">
-
-            <table class="table-content text-center border-top">
-                <thead>
-                    <tr class="header-table">
             <table class="table text-center border-top table-content">
                 <thead class="table-header-wrapp">
                     <tr class="table-header-content">
@@ -57,11 +56,8 @@
                         <th scope="col"></th>
                     </tr>
                 </thead>
-
-                <tbody>
-                    <tr class="">
-                <tbody class="table-body-wrapp">
-                    <tr class="table-body-content">
+                <tbody class="table-body-wrapp" id="records">
+                    <!-- <tr class="table-body-content">
                         <th scope="row">1</th>
                         <td class="text-success">доход</td>
                         <td>зарплата</td>
@@ -87,7 +83,7 @@
                                             fill="black" />
                                     </svg>
                                 </a>
-                                <a href="/profit-expenses-edit" class="text-decoration-none">
+                                <a href="/operations-edit" class="text-decoration-none">
                                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
                                         <path
@@ -124,7 +120,7 @@
                                             fill="black" />
                                     </svg>
                                 </a>
-                                <a href="/profit-expenses-edit" class="text-decoration-none">
+                                <a href="/operations-edit" class="text-decoration-none">
                                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
                                         <path
@@ -134,7 +130,7 @@
                                 </a>
                             </div>
                         </td>
-                    </tr>
+                    </tr> -->
                 </tbody>
             </table>
         </div>

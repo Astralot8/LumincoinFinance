@@ -1,5 +1,4 @@
 import config from "../config/config";
-import { HttpUtils } from "./http-utils";
 
 export class AuthUtils {
   static accessTokenKey = "accessToken";
@@ -49,7 +48,6 @@ export class AuthUtils {
         
         if(tokensObj && !tokensObj.error){
           const userInfo2 = JSON.parse(this.getAuthInfo("userInfo"));
-          console.log(userInfo2)
           this.setAuthInfo(tokensObj.tokens.accessToken, tokensObj.tokens.refreshToken, userInfo2);
           result = true;
         }

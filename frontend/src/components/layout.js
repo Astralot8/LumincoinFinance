@@ -1,3 +1,4 @@
+import config from "../config/config";
 import { AuthUtils } from "../utils/auth-utils";
 import { HttpUtils } from "../utils/http-utils";
 
@@ -11,10 +12,30 @@ export class Layout {
     this.balanceValue = null;
     this.userName = document.getElementById("userName");
 
+    this.mainButton = document.getElementById("main");
+    this.mainSVGElement = document.getElementById("main-svg");
+    this.operationButton = document.getElementById("operations");
+    this.operationSVGElement = document.getElementById("operations-svg");
+    
+    this.categotyButton = document.getElementById("categoty");
+    this.categotySVGElement = document.getElementById("categoty-svg");
+    this.profitButton = document.getElementById("profit");
+    this.expensesButton = document.getElementById("expenses");
+
+    this.linkArray = [
+      this.mainButton,
+      this.operationButton,
+      this.categotyButton,
+      this.profitButton,
+      this.expensesButton,
+    ];
+
+    
+    
     this.openNewRoute = openNewRoute;
     this.watchUserName();
     this.watchBalance();
-    
+    this.watchActiveButton(this.linkArray);
 
     document
       .getElementById("balance-button")
@@ -29,19 +50,16 @@ export class Layout {
     if (result || !result.error) {
       this.balanceElement.innerText = result.response.balance + "$";
       this.balanceValue = result.response.balance;
-      
     } else {
       this.balanceElement.innerText = "Ошибка запроса баланса";
     }
   }
 
-  watchUserName(){
-      const userInfo = JSON.parse(AuthUtils.getAuthInfo("userInfo"));
-    
-      if(userInfo){
-        this.userName.innerText = userInfo.name + " " + userInfo.lastName;
-      }
-      
+  watchUserName() {
+    const userInfo = JSON.parse(AuthUtils.getAuthInfo("userInfo"));
+    if (userInfo) {
+      this.userName.innerText = userInfo.name + " " + userInfo.lastName;
+    }
   }
 
   async changeBalance() {
@@ -76,6 +94,26 @@ export class Layout {
         "Баланс должен быть заполнен, укажите корректное значение баланса - равен или больше 0! "
       );
       return;
+    }
+  }
+
+  watchActiveButton(linkArray) {
+    
+    for(let i = 0; i < Array.from(linkArray).length; i++){
+      if(linkArray[i].href === window.location.href){
+        linkArray[i].classList.add("active");
+      }
+      if(window.location.href.includes("profit") || window.location.href.includes("expenses")){
+        this.categotyButton.classList.add("active");
+        this.categotySVGElement.style.fill = "#ffffff"
+      }
+      if(window.location.href.includes("/operations")){
+        this.operationSVGElement.style.fill = "#ffffff"
+      }
+      if(window.location.href.includes("/") && window.location.href === this.mainButton.href){
+        this.mainSVGElement.style.fill = "#ffffff"
+      }
+     
     }
   }
 }
