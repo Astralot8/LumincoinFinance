@@ -34,6 +34,7 @@ export class AuthUtils {
   static async updateAccessToken(){
     let result = false;
     const refreshToken = this.getAuthInfo(this.refreshTokenKey);
+    const userInfo2 = JSON.parse(this.getAuthInfo("userInfo"));
     if(refreshToken) {
       const response = await fetch(config.api + '/refresh', {
         method: 'POST',
@@ -45,9 +46,9 @@ export class AuthUtils {
       });
       if(response && response.status === 200){
         const tokensObj = await response.json();
-        
+        console.log(tokensObj.tokens.accessToken);
+        console.log(tokensObj.tokens.refreshToken);
         if(tokensObj && !tokensObj.error){
-          const userInfo2 = JSON.parse(this.getAuthInfo("userInfo"));
           this.setAuthInfo(tokensObj.tokens.accessToken, tokensObj.tokens.refreshToken, userInfo2);
           result = true;
         }

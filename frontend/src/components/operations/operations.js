@@ -3,37 +3,139 @@ import { HttpUtils } from "../../utils/http-utils";
 
 export class ProfitExpenses {
   constructor(openNewRoute) {
+    this.openNewRoute = openNewRoute;
+    this.init();
+  }
+
+  init() {
+    this.findElement();
+    this.todayFilterButton.classList.add("active");
+    this.getProfitExpenses();
+    this.watchActiveButton(this.filterButtonsArray);
+  }
+
+  watchActiveButton(buttonsArray) {
+    for (let i = 0; i < buttonsArray.length; i++) {
+      buttonsArray[i].addEventListener("click", (e) => {
+        if (buttonsArray[i].id === "today-filter") {
+          this.resetTable();
+          buttonsArray[i].classList.add("active");
+          this.getProfitExpenses();
+        }
+        if (buttonsArray[i].id === "week-filter") {
+          this.resetTable();
+          buttonsArray[i].classList.add("active");
+          this.getProfitExpenses(DateUtils.dateFrom, DateUtils.dateWeek);
+        }
+        if (buttonsArray[i].id === "month-filter") {
+          this.resetTable();
+          buttonsArray[i].classList.add("active");
+          this.getProfitExpenses(DateUtils.dateFrom, DateUtils.dateMonth);
+        }
+        if (buttonsArray[i].id === "year-filter") {
+          this.resetTable();
+          buttonsArray[i].classList.add("active");
+          this.getProfitExpenses(DateUtils.dateFrom, DateUtils.dateYear);
+        }
+        if (buttonsArray[i].id === "all-filter") {
+          this.resetTable();
+          buttonsArray[i].classList.add("active");
+          this.getProfitExpenses(DateUtils.dateOld, DateUtils.dateNew);
+        }
+        if (buttonsArray[i].id === "interval-filter") {
+          this.intervalPopUp.style.display = "flex";
+          this.setInterval();
+          this.chooseButton.addEventListener("click", (e) => {
+            
+            this.intervalPopUp.style.display = "none";
+            this.resetTable();
+            buttonsArray[i].classList.add("active");
+            this.getProfitExpenses(this.startDay, this.endDay);
+          });
+          this.closeButton.addEventListener("click", () => {
+            this.intervalPopUp.style.display = "none";
+
+          });
+
+          
+          
+        }
+      });
+    }
+  }
+
+  setInterval() {
+    this.startDateInput.addEventListener("change", () => {
+      this.startDateText.innerText = new Date(this.startDateInput.value).toLocaleDateString();
+      this.startDay = this.startDateInput.value;
+    });
+    this.endDateInput.addEventListener("change", () => {
+      this.endDateText.innerText = new Date(this.endDateInput.value).toLocaleDateString();
+      this.endDay = this.endDateInput.value;
+    });
+  }
+
+  resetTable() {
+    const buttonsElements = document.querySelectorAll("button");
+    buttonsElements.forEach((buttonItem) =>
+      buttonItem.classList.remove("active")
+    );
+    const tableElement = document.querySelectorAll("td");
+    tableElement.forEach((item) => item.remove());
+  }
+
+  findElement() {
+    this.recordsElement = document.getElementById("records");
     this.popUpElement = document.getElementById("deleteOperation");
+
     this.confirmButton = document.getElementById("confirm-button");
     this.canceledButton = document.getElementById("canceled-button");
-    this.openNewRoute = openNewRoute;
 
     this.todayFilterButton = document.getElementById("today-filter");
     this.weekFilterButton = document.getElementById("week-filter");
     this.monthFilterButton = document.getElementById("month-filter");
+    this.yearFilterButton = document.getElementById("year-filter");
     this.allFilterButton = document.getElementById("all-filter");
     this.intervalFilterButton = document.getElementById("interval-filter");
-    
-    this.todayFilterButton.addEventListener("click", this.getProfitExpenses());
-   
 
-   
-    this.dateFrom = new Date();
-    console.log(this.dateFrom)
-    this.dateFrom = new Date();
+    this.intervalPopUp = document.getElementById("set-interval");
+    this.chooseButton = document.getElementById("choose-button");
+    this.closeButton = document.getElementById("close-button");
 
-    
+    this.startDateInput = document.getElementById("startDate");
+    this.endDateInput = document.getElementById("endDate");
+
+    this.startDay = null;
+    this.endDay = null;
+
+    this.startDateText = document.getElementById("startDateText");
+    this.endDateText = document.getElementById("endDateText");
+
+    this.filterButtonsArray = [
+      this.todayFilterButton,
+      this.weekFilterButton,
+      this.monthFilterButton,
+      this.yearFilterButton,
+      this.allFilterButton,
+      this.intervalFilterButton,
+    ];
   }
 
   async getProfitExpenses(dateFrom, dateTo) {
-
     let result = null;
-    if(dateFrom && dateTo){
-      result = await HttpUtils.request("/operations?period=interval&dateFrom=" + dateFrom + "&dateTo=" + dateTo, "GET", true);
+    if (dateFrom && dateTo) {
+      result = await HttpUtils.request(
+        "/operations?period=interval&dateFrom=" +
+          dateFrom +
+          "&dateTo=" +
+          dateTo,
+        "GET",
+        true
+      );
       if (result.redirect) {
         return this.openNewRoute(result.redirect);
       }
-  
+
       if (
         result.error ||
         !result.response ||
@@ -43,12 +145,12 @@ export class ProfitExpenses {
           "Возникла ошибка при запросе операций. Обратитесь в поддержку."
         );
       }
-    }else{
+    } else {
       result = await HttpUtils.request("/operations", "GET", true);
       if (result.redirect) {
         return this.openNewRoute(result.redirect);
       }
-  
+
       if (
         result.error ||
         !result.response ||
@@ -59,34 +161,35 @@ export class ProfitExpenses {
         );
       }
     }
-    
 
     this.showRecords(result.response);
   }
 
   showRecords(profitExpensesArray) {
-    const recordsElement = document.getElementById("records");
     if (profitExpensesArray) {
-      
-      profitExpensesArray.sort();
       for (let i = 0; i < profitExpensesArray.length; i++) {
-        
         const trElement = document.createElement("tr");
+
         trElement.classList.add("table-body-content");
         trElement.insertCell().innerHTML = i + 1;
 
-        if(profitExpensesArray[i].type === "income"){
+        if (profitExpensesArray[i].type === "income") {
           trElement.insertCell().innerHTML = `<span class="text-success">доход</span>`;
         } else {
           trElement.insertCell().innerHTML = `<span class="text-danger">расход</span>`;
         }
-        
+
         trElement.insertCell().innerText = profitExpensesArray[i].category;
         trElement.insertCell().innerText = profitExpensesArray[i].amount + "$";
-        trElement.insertCell().innerText = new Date(profitExpensesArray[i].date).toLocaleDateString();
+        trElement.insertCell().innerText = new Date(
+          profitExpensesArray[i].date
+        ).toLocaleDateString();
         trElement.insertCell().innerText = profitExpensesArray[i].comment;
-        trElement.insertCell().innerHTML = `<div>
-                                <a href="/openPopUp?id=` + profitExpensesArray[i].id + `" class="text-decoration-none me-2 delete-button" id="delete-icon">
+        trElement.insertCell().innerHTML =
+          `<div>
+                                <a href="/openPopUp?id=` +
+          profitExpensesArray[i].id +
+          `" class="text-decoration-none me-2 delete-button" id="delete-icon">
                                     <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
                                         <path
@@ -103,7 +206,9 @@ export class ProfitExpenses {
                                             fill="black" />
                                     </svg>
                                 </a>
-                                <a href="/operations-edit?id=` + profitExpensesArray[i].id + `" class="text-decoration-none" id=""edit-icon>
+                                <a href="/operations-edit?id=` +
+          profitExpensesArray[i].id +
+          `" class="text-decoration-none" id=""edit-icon>
                                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
                                         <path
@@ -113,30 +218,27 @@ export class ProfitExpenses {
                                 </a>
                             </div>`;
 
-        recordsElement.appendChild(trElement);
+        this.recordsElement.appendChild(trElement);
       }
     }
-
-   
 
     this.activateDeleteButton();
   }
 
-  activateDeleteButton(){
+  activateDeleteButton() {
     const deleteButtons = document.querySelectorAll(".delete-button");
     if (deleteButtons) {
-      Array.from(deleteButtons).forEach(link => {
+      Array.from(deleteButtons).forEach((link) => {
         link.addEventListener("click", (event) => {
           this.popUpElement.style.display = "flex";
           event.preventDefault();
-          this.confirmButton.addEventListener("click", ()=> {
+          this.confirmButton.addEventListener("click", () => {
             const url = new URLSearchParams(window.location.search);
-            const id = url.get("id")
-            this.confirmButton.href =
-              "/operations-delete?id=" + id;  
+            const id = url.get("id");
+            this.confirmButton.href = "/operations-delete?id=" + id;
           });
         });
-      })
+      });
     }
   }
 }
