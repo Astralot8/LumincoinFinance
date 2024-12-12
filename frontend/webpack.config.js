@@ -29,6 +29,7 @@ module.exports = {
           { from: "./src/static/fonts", to: "fonts" },
           { from: "./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js", to: "scripts" },
           { from: "./node_modules/chart.js/dist/chart.umd.js", to: "scripts" },
+          { from: "./node_modules/chart.js/dist/chart.js", to: "scripts" },
           { from: "./node_modules/bootstrap/dist/css/bootstrap.min.css", to: "css" },
           { from: "./src/styles", to: "css" },
           
