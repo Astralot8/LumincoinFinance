@@ -6,12 +6,11 @@ import { Chart } from "chart.js/auto";
 export class Dashboard {
   constructor(openNewRoute) {
     this.openNewRoute = openNewRoute;
-
+    this.findElement();
     this.init();
   }
 
   init() {
-    this.findElement();
     this.todayFilterButton.classList.add("active");
     this.getProfitExpenses();
     this.watchActiveButton(this.filterButtonsArray);
@@ -21,31 +20,36 @@ export class Dashboard {
     for (let i = 0; i < buttonsArray.length; i++) {
       buttonsArray[i].addEventListener("click", (e) => {
         if (buttonsArray[i].id === "today-filter") {
+          this.resetChart();
           buttonsArray[i].classList.add("active");
           this.getProfitExpenses();
         }
         if (buttonsArray[i].id === "week-filter") {
+          this.resetChart();
           buttonsArray[i].classList.add("active");
           this.getProfitExpenses(DateUtils.dateFrom, DateUtils.dateWeek);
         }
         if (buttonsArray[i].id === "month-filter") {
+          this.resetChart();
           buttonsArray[i].classList.add("active");
           this.getProfitExpenses(DateUtils.dateFrom, DateUtils.dateMonth);
         }
         if (buttonsArray[i].id === "year-filter") {
+          this.resetChart();
           buttonsArray[i].classList.add("active");
           this.getProfitExpenses(DateUtils.dateFrom, DateUtils.dateYear);
         }
         if (buttonsArray[i].id === "all-filter") {
+          this.resetChart();
           buttonsArray[i].classList.add("active");
           this.getProfitExpenses(DateUtils.dateOld, DateUtils.dateNew);
         }
         if (buttonsArray[i].id === "interval-filter") {
           this.intervalPopUp.style.display = "flex";
+          this.resetChart();
           this.setInterval();
           this.chooseButton.addEventListener("click", (e) => {
             this.intervalPopUp.style.display = "none";
-
             buttonsArray[i].classList.add("active");
             this.getProfitExpenses(this.startDay, this.endDay);
           });
@@ -55,6 +59,17 @@ export class Dashboard {
         }
       });
     }
+  }
+
+  resetChart() {
+    const buttonsElements = document.querySelectorAll("button");
+    buttonsElements.forEach((buttonItem) =>
+      buttonItem.classList.remove("active")
+    );
+    this.incomeChartArray = [];
+    this.expenseChartArray = [];
+    this.incomeChartArrayConcat = [];
+    this.expenseChartArrayConcat = [];
   }
 
   setInterval() {
@@ -111,12 +126,12 @@ export class Dashboard {
     this.incomeChartElement = document.getElementById("income");
     this.expenseChartElement = document.getElementById("expense");
     this.incomeChart = null;
+    this.expenseChart = null;
 
-
-    this.incomeValueArray = [];
-    this.incomeLabelArray = [];
-    this.expenseValueArray = [];
-    this.expenseLabelArray = [];
+    this.incomeChartArray = [];
+    this.expenseChartArray = [];
+    this.incomeChartArrayConcat = [];
+    this.expenseChartArrayConcat = [];
   }
 
   async getProfitExpenses(dateFrom, dateTo) {
@@ -159,40 +174,93 @@ export class Dashboard {
         );
       }
     }
-    console.log(result.response)
-    result.response.forEach(element => {
-      if(element.type === "income"){
-        this.incomeValueArray.push(element.amount);
-        this.incomeLabelArray.push(element.category);
+
+    let labelObjForIncome = null;
+
+    let labelObjForExpense = null;
+
+    for (let i = 0; i < result.response.length; i++) {
+      if (result.response[i].type === "income") {
+        labelObjForIncome = {
+          category: result.response[i].category,
+          amount: result.response[i].amount,
+        };
+        if (result.response[i].category === labelObjForIncome.category) {
+          labelObjForIncome.amount =
+            labelObjForIncome.amount + result.response[i].amount;
+        }
+        this.incomeChartArray.push(labelObjForIncome);
       }
+      if (result.response[i].type === "expense") {
+        labelObjForExpense = {
+          category: result.response[i].category,
+          amount: result.response[i].amount,
+        };
+
+        this.expenseChartArray.push(labelObjForExpense);
+      }
+    }
+
+    let tempObjIncome = {};
+
+    this.incomeChartArray.map((object) => {
+      tempObjIncome[object.category] = (tempObjIncome[object.category] || 0) + object.amount; 
     });
 
-    
-    this.initChartPie(this.incomeLabelArray, this.incomeValueArray)
+    for(let key in tempObjIncome){
+      this.incomeChartArrayConcat.push({category: key, amount: tempObjIncome[key]})
+    }
+    let tempObjExpense = {};
+
+    this.expenseChartArray.map((object) => {
+      tempObjExpense[object.category] = (tempObjExpense[object.category] || 0) + object.amount; 
+    });
+
+    for(let key in tempObjExpense){
+      this.expenseChartArrayConcat.push({category: key, amount: tempObjExpense[key]})
+    }
+
+    if (this.expenseChart || this.incomeChart) {
+      this.chartCleaner();
+    }
+
+    this.initChartPie(this.incomeChartArrayConcat, this.expenseChartArrayConcat);
   }
-  initChartPie(lableData, valueData) {
-    const languagesData = {
-      labels: lableData,
-      datasets: [
-        {
-          data: valueData,
-          backgroundColor: [
-            "#DC3545",
-            "#FD7E14",
-            "#FFC107",
-            "#20C997",
-            "#0D6EFD",
-          ],
-        },
-      ],
-    };
-    const config = {
+  initChartPie(incomeChartArray, expenseChartArray) {
+    const incomeConfig = {
       type: "pie",
-      data: languagesData,
+      data: {
+        labels: incomeChartArray.map((label) => label.category),
+        datasets: [
+          {
+            label: "USD",
+            data: incomeChartArray.map((label) => label.amount),
+            borderWidth: 1,
+          },
+        ],
+      },
     };
-   
-    
-    this.incomeChart = new Chart(this.incomeChartElement, config);
-    
+
+    const expenseConfig = {
+      type: "pie",
+      data: {
+        labels: expenseChartArray.map((label) => label.category),
+        datasets: [
+          {
+            label: "USD",
+            data: expenseChartArray.map((label) => label.amount),
+            borderWidth: 1,
+          },
+        ],
+      },
+    };
+
+    this.incomeChart = new Chart(this.incomeChartElement, incomeConfig);
+    this.expenseChart = new Chart(this.expenseChartElement, expenseConfig);
+  }
+
+  chartCleaner() {
+    this.incomeChart.destroy();
+    this.expenseChart.destroy();
   }
 }

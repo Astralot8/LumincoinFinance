@@ -21,11 +21,12 @@ export class profitExpensesCreate {
 
     if (this.typeElement.value === "income") {
       this.getCategoryProfit();
-      this.optionElementValue = 1;
+     
     }
 
     if (this.typeElement.value === "expense") {
       this.getCategoryExpense();
+      
     }
 
     this.typeElement.addEventListener("change", () => {
@@ -132,12 +133,12 @@ export class profitExpensesCreate {
   showRecords(categoriesArray) {
     for (let i = 0; i < categoriesArray.length; i++) {
       const optionElement = document.createElement("option");
-      
+      this.optionElementValue = categoriesArray[0].id;
       optionElement.value = categoriesArray[i].id;
       optionElement.innerText = categoriesArray[i].title;
       this.categoryElement.appendChild(optionElement);
     }
-    this.optionElementValue = 1;
+    
     this.categoryElement.addEventListener("change", (e)=>{
       this.optionElementValue = e.target.value;
     })
