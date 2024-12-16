@@ -4,13 +4,14 @@ import { HttpUtils } from "../../utils/http-utils";
 export class ProfitExpenses {
   constructor(openNewRoute) {
     this.openNewRoute = openNewRoute;
+    this.findElement();
     this.init();
   }
 
   init() {
-    this.findElement();
+    
     this.todayFilterButton.classList.add("active");
-    this.getProfitExpenses();
+    this.getProfitExpenses().then();
     this.watchActiveButton(this.filterButtonsArray);
   }
 
@@ -45,19 +46,17 @@ export class ProfitExpenses {
         if (buttonsArray[i].id === "interval-filter") {
           this.intervalPopUp.style.display = "flex";
           this.setInterval();
-          this.chooseButton.addEventListener("click", (e) => {
-            
+          this.chooseButton.addEventListener("click", () => {
             this.intervalPopUp.style.display = "none";
             this.resetTable();
             buttonsArray[i].classList.add("active");
             this.getProfitExpenses(this.startDay, this.endDay);
-          });
+          }, { once: true });
+          
           this.closeButton.addEventListener("click", () => {
             this.intervalPopUp.style.display = "none";
 
           });
-
-          
           
         }
       });
@@ -80,7 +79,7 @@ export class ProfitExpenses {
     buttonsElements.forEach((buttonItem) =>
       buttonItem.classList.remove("active")
     );
-    const tableElement = document.querySelectorAll("td");
+    const tableElement = document.querySelectorAll(".table-body-content");
     tableElement.forEach((item) => item.remove());
   }
 

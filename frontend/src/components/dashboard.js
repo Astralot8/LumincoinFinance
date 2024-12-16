@@ -52,7 +52,7 @@ export class Dashboard {
             this.intervalPopUp.style.display = "none";
             buttonsArray[i].classList.add("active");
             this.getProfitExpenses(this.startDay, this.endDay);
-          });
+          }, { once: true });
           this.closeButton.addEventListener("click", () => {
             this.intervalPopUp.style.display = "none";
           });
