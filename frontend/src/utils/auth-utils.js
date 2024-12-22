@@ -1,5 +1,4 @@
 import config from "../config/config";
-import { HttpUtils } from "./http-utils";
 
 export class AuthUtils {
   static accessTokenKey = "accessToken";
@@ -32,9 +31,10 @@ export class AuthUtils {
     }
   }
 
-  static async updateRefreshToken(){
+  static async updateAccessToken(){
     let result = false;
     const refreshToken = this.getAuthInfo(this.refreshTokenKey);
+    const userInfo2 = JSON.parse(this.getAuthInfo("userInfo"));
     if(refreshToken) {
       const response = await fetch(config.api + '/refresh', {
         method: 'POST',
@@ -46,10 +46,7 @@ export class AuthUtils {
       });
       if(response && response.status === 200){
         const tokensObj = await response.json();
-        
         if(tokensObj && !tokensObj.error){
-          const userInfo2 = JSON.parse(this.getAuthInfo("userInfo"));
-          console.log(userInfo2)
           this.setAuthInfo(tokensObj.tokens.accessToken, tokensObj.tokens.refreshToken, userInfo2);
           result = true;
         }
